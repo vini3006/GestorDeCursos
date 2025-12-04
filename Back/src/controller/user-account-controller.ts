@@ -11,7 +11,7 @@ const userController = {
     login: async(req: Request, res: Response) => { //gerencia os logins
         const {matricula, senha} = req.body;
 
-        const account: Account | null = await userService.getAccount(matricula);
+        const account: Account | null = await userService.getAccountByMatricula(matricula);
 
         if (!account) { //verifica se o usuário correspondente à matricula existe
             return res.status(404).json({msg: "Conta não encontrada!"})
@@ -29,12 +29,12 @@ const userController = {
 
         const token = jwt.sign(payload, SECRET, {expiresIn: "2h"}); //assina o token
 
-        return res.json({msg: "Login efetuado com sucesso!", token});
+        return res.status(200).json({msg: "Login efetuado com sucesso!", token});
     },
 
-    getAll: async (req: Request, res: Response) => { //lista todos os usuários presentes no BD
+    getAllUsers: async (req: Request, res: Response) => { //lista todos os usuários presentes no BD
         try {
-            const users: User[] = await userService.getAll(); 
+            const users: User[] = await userService.getAllUsers(); 
             return res.status(200).json(users);
         } catch (err) {
             console.error(err);
@@ -46,7 +46,7 @@ const userController = {
         const { cpf, nome, dt_nascimento, email, matricula, senha, dataCriacao, tipo } = req.body; //recebe os dados da aplicação
         
         const newUser = new User(cpf, nome, dt_nascimento, email);
-        const newAccount = new Account(matricula, senha, tipo, dataCriacao, cpf)
+        const newAccount = new Account(matricula, senha, tipo, dataCriacao, cpf);
         try {
             await userService.insertUser(newUser, newAccount);
             return res.status(200).json({msg: "Conta inserida com sucesso!"})
@@ -83,14 +83,24 @@ const userController = {
         try {
             const result = await userService.deleteAccount(matricula);
 
-            if(result.erro){ //caso occrra um erro no service
-                return res.status(400).json({msg: "result.erro"})
+            if(result.erro){ //caso ocorra um erro no service
+                return res.status(404).json({msg: result.erro})
             }
 
             return res.status(200).json({msg: "Conta deletada com sucesso!", detalhes: result});
         } catch (err) {
             console.error(err);
             return res.status(500).json({msg: "Erro ao deletar a conta!"})
+        }
+    },
+
+    getAllAcounts: async(req: Request, res: Response) => {
+        try{
+            const accounts: Account[] = await userService.getAllAcounts();
+            return res.status(200).json(accounts); 
+        } catch (err){
+            console.error(err);
+            return res.status(500).json({msg: "Erro ao buscar contas!"});
         }
     }
 };

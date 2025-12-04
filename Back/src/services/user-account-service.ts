@@ -3,7 +3,7 @@ import { User } from '../models/user-model';
 import { Account } from '../models/account-model';
 
 const userService = {
-    getAll: async(): Promise<User[]> => { //definindo o tipo de retorno da função com a classe usuario
+    getAllUsers: async(): Promise<User[]> => { //definindo o tipo de retorno da função com a classe usuario
         const [rows] = await db.execute(`SELECT * from usuario;`);
 
         const users = rows as User[];
@@ -39,7 +39,7 @@ const userService = {
         }
     }, 
 
-    getAccount: async(matricula: string): Promise<Account | null> => { //seleciona uma conta em função da matrícula
+    getAccountByMatricula: async(matricula: string): Promise<Account | null> => { //seleciona uma conta em função da matrícula
         const [rows] = await db.execute(`SELECT * FROM conta WHERE matricula = ?;`, [matricula]);
         
         const contas = rows as Account[];
@@ -90,6 +90,14 @@ const userService = {
             userDeleted = true;
         }
         return { contaDeletada: matricula, usuarioDeletado: userDeleted, cpf }; 
+    },
+
+    getAllAcounts: async(): Promise<Account[]> => { //seleciona todas as contas, mesmo que o usuario seja o mesmo.
+        const [rows] = await db.execute(`SELECT * FROM conta;`)
+
+        const accounts = rows as Account[];
+
+        return accounts;
     }
 }
 
