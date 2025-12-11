@@ -1,43 +1,43 @@
 import db from '../config/database'; //acesso direto ao banco de dados
-import { Period } from '../models/period-model';
+import { Semester } from '../models/semester-model';
 
-const periodService = {
-    getAll: async(): Promise<Period[]> => { //lista todos os períodos do BD
+const semesterService = {
+    getAll: async(): Promise<Semester[]> => { //lista todos os períodos do BD
         const [rows] = await db.execute(`SELECT * from periodoLetivo;`);
 
-        const periods = rows as Period[];
+        const semesters = rows as Semester[];
 
-        return periods;
+        return semesters;
     },
 
-    createPeriod: async(nome: string, dataInicio: Date, dataFim: Date): Promise<Period> => { //cria um novo período letivo no banco de dados
+    createSemester: async(nome: string, dataInicio: Date, dataFim: Date): Promise<Semester> => { //cria um novo período letivo no banco de dados
         const [result]: any = await db.execute(`INSERT INTO periodoLetivo (nome, dataInicio, dataFim) VALUES (?, ?, ?);`, [nome, dataInicio, dataFim]);
 
-        const newPeriod = new Period(result.insertId, nome, dataInicio, dataFim);
+        const newSemester = new Semester(result.insertId, nome, dataInicio, dataFim);
 
-        return newPeriod;
+        return newSemester;
     },
 
-    getPeriodById: async(id: number): Promise<Period | null> => { //seleciona um período pelo seu ID
+    getSemesterById: async(id: number): Promise<Semester | null> => { //seleciona um período pelo seu ID
         const [rows] = await db.execute(`SELECT * FROM periodoLetivo WHERE id = ?;`, [id]);
 
-        const periods = rows as Period[];
+        const semesters = rows as Semester[];
 
-        if(periods.length === 0){
+        if(semesters.length === 0){
             return null;
         }
 
-        return periods[0];
+        return semesters[0];
     },
 
-    updatePeriod: async(id: number, nome?: string, dataInicio?: Date, dataFim?: Date): Promise<Period | null> => { //atualiza dados sobre o período
+    updateSemester: async(id: number, nome?: string, dataInicio?: Date, dataFim?: Date): Promise<Semester | null> => { //atualiza dados sobre o período
         if (!id) {
             return null;
         }
         //Verifica se o período existe
-        const period: any = await periodService.getPeriodById(id);
+        const semester: any = await semesterService.getSemesterById(id);
 
-        if (!period) {
+        if (!semester) {
             return null; // ID não existe
         }
 
@@ -62,7 +62,7 @@ const periodService = {
 
         // Se nada foi enviado, retorna null
         if (updates.length === 0) {
-            return period;
+            return semester;
         }
 
         // Adiciona o ID no final
@@ -72,13 +72,13 @@ const periodService = {
         await db.execute(`UPDATE periodoLetivo SET ${updates.join(", ")} WHERE id = ?;`,values);
 
         // Retorna objeto atualizado 
-        return { id, nome: nome ?? period.nome!, dataInicio: dataInicio ?? period.dataInicio!, dataFim: dataFim ?? period.dataFim! } as Period;
+        return { id, nome: nome ?? semester.nome!, dataInicio: dataInicio ?? semester.dataInicio!, dataFim: dataFim ?? semester.dataFim! } as Semester;
     },
 
-    deletePeriod: async(id: number): Promise<{ deleted: boolean } | null> => { //deleta o período com o ID passado
-        const period = await periodService.getPeriodById(id) //verifica a existência do período
+    deleteSemester: async(id: number): Promise<{ deleted: boolean } | null> => { //deleta o período com o ID passado
+        const semester = await semesterService.getSemesterById(id) //verifica a existência do período
 
-        if (!period) {
+        if (!semester) {
             return null;
         }
 
@@ -87,4 +87,4 @@ const periodService = {
     }
 }
 
-export default periodService;
+export default semesterService;

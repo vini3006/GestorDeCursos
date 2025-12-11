@@ -10,8 +10,8 @@ const subjectService = {
         return subjects;
     },
 
-    createSubject: async(nome: string, periodo: number): Promise<Subject> => {
-        const [result]:any = await db.execute(`INSERT INTO materia (nome, periodo) VALUES (?, ?);`, [nome, periodo]);
+    createSubject: async(nome: string, periodo: number, idCurso: number): Promise<Subject> => {
+        const [result]:any = await db.execute(`INSERT INTO materia (nome, periodo, idCurso) VALUES (?, ?, ?);`, [nome, periodo, idCurso]);
 
         const newSubject = new Subject(result.insertId, nome, periodo);
 

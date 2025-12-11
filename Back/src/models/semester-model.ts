@@ -1,4 +1,4 @@
-export class Period{
+export class Semester{
     public id?: number;
     public nome?: string;
     public dataInicio?: Date;

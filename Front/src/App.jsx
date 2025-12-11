@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import axios from 'axios'
-
-
+import api from 'axios'
 
 function App() {
   const [users, setUsers] = useState([]);
   const updateUsers = () => {
-    axios.get("http://localhost:3001/user/").then((response) => {
+    api.get("http://localhost:3001/user/").then((response) => {
       const data = response.data;
       setUsers(data);
     });

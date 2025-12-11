@@ -1,6 +1,7 @@
 import { Request, Response } from "express"; //gerenciamento das requisições
 import subjectService from "../services/subject-service";
 import { Subject } from "../models/subject-model";
+import courseService from "../services/course-service";
 
 const subjectController = {
     getAll: async(req: Request, res:Response) => {
@@ -14,14 +15,20 @@ const subjectController = {
     },
 
     createSubject: async(req: Request, res: Response) => {
-        const { nome, periodo } = req.body;
+        const { nome, periodo, idCurso } = req.body;
 
-        if(!nome || !periodo){
-            return res.status(400).json({msg: "Nome e período são obrigatórios!"});
+        if(!nome || !periodo || !idCurso){
+            return res.status(400).json({msg: "Nome ,período e curso ao qual está associada são obrigatórios!"});
         }
 
         try {
-            const newSubject: Subject = await subjectService.createSubject(nome, periodo);
+            const course = await courseService.getCourseById(idCurso);
+
+            if(!course){
+                return res.status(404).json({msg: "Curso não encontrado!"});
+            }
+            
+            const newSubject: Subject = await subjectService.createSubject(nome, periodo, idCurso);
             return res.status(201).json({newSubject, msg: "Disciplina inserida com sucesso!"});
         } catch (err){
             console.error(err);
