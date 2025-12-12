@@ -100,29 +100,28 @@ useEffect(() => {
 
       const decodedToken = jwtDecode(token);
       const userTipo = decodedToken.tipo;
-
+      
+      // 1. Salva os dados no localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify({ tipo: userTipo, matricula: decodedToken.matricula, cpf: decodedToken.cpf }));
       
       setMessage({ text: 'Login realizado com sucesso!', type: 'success' });
       
-      // Pequeno delay para usuário ver a mensagem
-      setTimeout(() => {
-        
-        if (userTipo === 'administrador') {
-            navigate('/admin/dashboard');
-        } else {
-            // Se não for administrador, redireciona para a rota padrão ou outra dashboard
-            navigate('/'); 
-        }
-        // --------------------------------------------------
-        
-      }, 1000);
+      // 2. 🌟 REDIRECIONAMENTO IMEDIATO E COMPLETO AQUI 🌟
+      //    Remove o setTimeout, pois ele não é necessário.
 
+      if (userTipo === 'administrador') {
+          navigate('/admin/dashboard', { replace: true });
+      } else if (userTipo === 'professor') {
+          navigate('/professor/dashboard', { replace: true }); 
+      } else {
+          // Se for 'aluno' ou outro tipo não especificado
+          navigate('/', { replace: true }); 
+      }
+      
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       
-      // Tratamento de erro melhorado para Axios
       const errorMsg = error.response?.data?.msg || 'Erro ao conectar com o servidor.';
       
       setMessage({ 
@@ -132,7 +131,7 @@ useEffect(() => {
     } finally {
       setLoading(false);
     }
-  };
+};
   // -------------------------------------
 
   const handlePasswordRecovery = async (e) => {

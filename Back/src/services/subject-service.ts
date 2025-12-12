@@ -22,7 +22,7 @@ const subjectService = {
     createSubject: async(nome: string, periodo: number, idCurso: number): Promise<Subject> => {
         const [result]:any = await db.execute(`INSERT INTO materia (nome, periodo, idCurso) VALUES (?, ?, ?);`, [nome, periodo, idCurso]);
 
-        const newSubject = new Subject(result.insertId, nome, periodo);
+        const newSubject = new Subject(result.insertId, nome, periodo, idCurso);
 
         return newSubject;
     },
@@ -48,14 +48,15 @@ const subjectService = {
      * Monta a query UPDATE dinamicamente com base nos campos opcionais fornecidos.
      * Retorna o objeto da matéria atualizada ou null se o ID não for encontrado.
      */
-    updateSubject: async(id: number, nome?: string, periodo?: number): Promise<Subject | null> => {
+    updateSubject: async(id: number, nome?: string, periodo?: number, idCurso?: number): Promise<Subject | null> => {
+    // 1. Busca a matéria existente para checagem e para obter valores atuais
         const subject = await subjectService.getSubjectById(id);
 
         if (!subject) {
-            return null;
+            return null; // Matéria não encontrada
         }
 
-        // Monta as partes que serão atualizadas dinamicamente
+        // 2. Monta as partes que serão atualizadas dinamicamente
         const updates: string[] = [];
         const values: any[] = [];
 
@@ -68,19 +69,32 @@ const subjectService = {
             updates.push("periodo = ?");
             values.push(periodo);
         }
+        
+        // Adiciona a lógica para o novo campo idCurso
+        if (idCurso !== undefined) {
+            updates.push("idCurso = ?");
+            values.push(idCurso);
+        }
 
         // Se nenhum campo foi atualizado.
         if (updates.length === 0) {
-            return subject;
+            return subject; // Retorna o objeto original se nada mudou
         }
 
-        // Adiciona o ID para a cláusula WHERE
+        // 3. Adiciona o ID para a cláusula WHERE
         values.push(id);
 
+        // 4. Executa a atualização no banco de dados
         await db.execute(`UPDATE materia SET ${updates.join(", ")} WHERE id = ?;`, values);
 
-        // Retorna o objeto atualizado.
-        return new Subject(id, nome ?? subject.nome! ,periodo ?? subject.periodo!);
+        // 5. Retorna o objeto Subject atualizado
+        // Usa o novo valor (se fornecido) ou o valor original (subject.idCurso)
+        return new Subject(
+            id, 
+            nome ?? subject.nome!, 
+            periodo ?? subject.periodo!, 
+            idCurso ?? subject.idCurso! // Adição do idCurso
+        );
     },
 
     /**

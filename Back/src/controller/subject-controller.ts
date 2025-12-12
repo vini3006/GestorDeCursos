@@ -50,14 +50,14 @@ const subjectController = {
      */
     updateSubject: async(req: Request, res: Response) => {
         const { id } = req.params;
-        const { nome, periodo } = req.body;
+        const { nome, periodo, idCurso } = req.body;
 
-        if (!nome && !periodo){
+        if (!nome && !periodo && !idCurso){
             return res.status(400).json({msg: "Nada para atualizar!"});
         }
 
         try {
-            const updatedSubject: Subject | null = await subjectService.updateSubject(Number(id), nome, periodo);
+            const updatedSubject: Subject | null = await subjectService.updateSubject(Number(id), nome, periodo, idCurso);
 
             if(!updatedSubject){
                 return res.status(404).json({msg: "Disciplina não encontrada!"});
