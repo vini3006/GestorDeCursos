@@ -1,0 +1,153 @@
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --bg-light: #f4f7f9;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.professor-dashboard-container {
+    padding: 100px 30px 30px; /* Padding ajustado para o header fixo */
+    background-color: var(--bg-light);
+    min-height: 100vh;
+}
+
+.dashboard-title {
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+    font-size: 2rem;
+    border-bottom: 2px solid var(--primary-orange);
+    padding-bottom: 10px;
+}
+
+/* --- Grid de Turmas --- */
+
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.class-card {
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 5px solid var(--primary-blue);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.class-title {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.class-detail {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 4px;
+}
+
+.manage-btn {
+    background-color: var(--primary-orange);
+    color: var(--white);
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+}
+
+.manage-btn:hover {
+    background-color: #e66a1a;
+}
+
+/* --- Estilos para Mensagens (Loading, Erro, Sem Dados) --- */
+
+.loading-text, .error-message, .no-data-message {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.1rem;
+}
+
+.error-message {
+    color: #c0392b; /* Vermelho */
+}
+
+/* --- Opções de Turma (Overlay) --- */
+
+.class-options-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.class-options-menu {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.class-options-menu h3 {
+    color: var(--primary-blue);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #555;
+}
+
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-btn {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.option-btn:hover {
+    background-color: #34495e;
+}

@@ -5,9 +5,10 @@ import { allowRoles } from "../middlewares/roles";
 
 const router = Router();
 
-router.get("/", auth, courseController.getAll);
-router.post("/admin", auth, allowRoles("administrador"), courseController.createCourse);
-router.put("/:id", auth, allowRoles("administrador", "professor"), courseController.updateCourse);
-router.delete("/admin/:id", auth, allowRoles("administrador"), courseController.deleteCourse);
+// Rotas de Curso
+router.get("/", auth, courseController.getAll); // Lista todos os cursos disponíveis (acesso por usuário logado).
+router.post("/admin", auth, allowRoles("administrador"), courseController.createCourse); // Cria um novo curso (apenas Admin).
+router.put("/:id", auth, allowRoles("administrador", "professor"), courseController.updateCourse); // Atualiza dados de um curso (Admin ou Professor).
+router.delete("/admin/:id", auth, allowRoles("administrador"), courseController.deleteCourse); // Deleta um curso (apenas Admin).
 
 export default router;

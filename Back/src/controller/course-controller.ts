@@ -1,8 +1,11 @@
-import { Request, Response } from "express";
-import courseService from "../services/course-service";
-import { Course } from "../models/course-model";
+import { Request, Response } from "express"; // Gerenciamento das requisições
+import courseService from "../services/course-service"; // Service para operações de Curso.
+import { Course } from "../models/course-model"; // Modelo de Curso.
 
 const courseController = {
+    /**
+     * Lista todos os cursos cadastrados no sistema.
+     */
     getAll: async(req: Request, res: Response) => {
         try{
             const courses = await courseService.getAll();
@@ -13,6 +16,10 @@ const courseController = {
         }
     },
 
+    /**
+     * Cria um novo curso.
+     * Rota exclusiva para Administradores.
+     */
     createCourse: async (req: Request, res: Response) => {
         const { nome, maxAlunos } = req.body;
 
@@ -29,6 +36,10 @@ const courseController = {
         }
     },
 
+    /**
+     * Atualiza o nome e/ou a capacidade máxima de alunos de um curso específico (ID).
+     * Rota acessível por Administrador e Professor.
+     */
     updateCourse: async(req: Request, res: Response) => {
         const { id } = req.params;
         const { nome, maxAlunos } = req.body;
@@ -51,6 +62,10 @@ const courseController = {
         }
     },
 
+    /**
+     * Deleta um curso específico (ID).
+     * Rota exclusiva para Administradores.
+     */
     deleteCourse: async (req: Request, res: Response) => {
         const { id } = req.params;
 

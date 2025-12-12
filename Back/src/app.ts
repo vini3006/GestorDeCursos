@@ -1,5 +1,6 @@
 import dotenv from "dotenv";//arquivo que efetivamente roda a aplicação.
 dotenv.config();
+import cors from "cors";
 
 import express from "express"; 
 import userRouter from "./routes/user-account-route";
@@ -13,6 +14,8 @@ import reportRouter from "./routes/report-route"
 const app = express();
 app.use(express.json());
 
+app.use(cors());
+
 app.use("/users", userRouter);
 app.use("/semester", semesterRouter);
 app.use("/subject", subjectRouter);
@@ -21,5 +24,5 @@ app.use("/course", courseRouter);
 app.use("/notifications", notificationRouter);
 app.use("/reports", reportRouter);
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
+app.listen(3001, () => console.log("Servidor rodando na porta 3001"));
     

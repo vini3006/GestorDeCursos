@@ -1,12 +1,15 @@
-import { Request, Response } from "express"; //gerenciamento das requisições
-import subjectService from "../services/subject-service";
-import { Subject } from "../models/subject-model";
-import courseService from "../services/course-service";
+import { Request, Response } from "express"; // Gerenciamento das requisições
+import subjectService from "../services/subject-service"; // Service para operações de Disciplina.
+import { Subject } from "../models/subject-model"; // Modelo de Disciplina.
+import courseService from "../services/course-service"; // Service para verificar a existência do Curso.
 
 const subjectController = {
+    /**
+     * Lista todas as disciplinas cadastradas no sistema.
+     */
     getAll: async(req: Request, res:Response) => {
         try {
-            const [subjects]: Subject[] = await subjectService.getAll();
+            const subjects: Subject[] = await subjectService.getAll();
             return res.status(200).json(subjects);
         } catch (err){
             console.error(err);
@@ -14,6 +17,10 @@ const subjectController = {
         }
     },
 
+    /**
+     * Cria uma nova disciplina, verificando antes se o curso associado (idCurso) existe.
+     * Rota exclusiva para Administradores.
+     */
     createSubject: async(req: Request, res: Response) => {
         const { nome, periodo, idCurso } = req.body;
 
@@ -22,6 +29,7 @@ const subjectController = {
         }
 
         try {
+            // Verifica a existência do curso.
             const course = await courseService.getCourseById(idCurso);
 
             if(!course){
@@ -36,6 +44,10 @@ const subjectController = {
         }
     },
 
+    /**
+     * Atualiza o nome e/ou o período de uma disciplina específica (ID).
+     * Rota exclusiva para Administradores.
+     */
     updateSubject: async(req: Request, res: Response) => {
         const { id } = req.params;
         const { nome, periodo } = req.body;
@@ -58,6 +70,10 @@ const subjectController = {
         }
     },
 
+    /**
+     * Deleta uma disciplina específica (ID).
+     * Rota exclusiva para Administradores.
+     */
     deleteSubject: async (req: Request, res: Response) => {
         const { id } = req.params;
 

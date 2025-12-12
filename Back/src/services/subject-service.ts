@@ -1,7 +1,11 @@
 import db from '../config/database';
 import { Subject } from '../models/subject-model';
 
+// Objeto de serviço com funções de CRUD para a entidade Matéria (Disciplina).
 const subjectService = {
+    /**
+     * Lista todas as matérias cadastradas na tabela 'materia'.
+     */
     getAll: async(): Promise<Subject[]> => { //lista todas as materias do curso
         const [rows] = await db.execute(`SELECT * FROM materia;`);
 
@@ -10,6 +14,11 @@ const subjectService = {
         return subjects;
     },
 
+    /**
+     * Insere uma nova matéria na tabela 'materia'.
+     * Argumentos: nome, período e idCurso.
+     * Retorna o objeto da nova matéria criada.
+     */
     createSubject: async(nome: string, periodo: number, idCurso: number): Promise<Subject> => {
         const [result]:any = await db.execute(`INSERT INTO materia (nome, periodo, idCurso) VALUES (?, ?, ?);`, [nome, periodo, idCurso]);
 
@@ -18,6 +27,10 @@ const subjectService = {
         return newSubject;
     },
 
+    /**
+     * Busca e retorna uma matéria específica usando o ID.
+     * Retorna a matéria encontrada ou null se não existir.
+     */
     getSubjectById: async(id: number): Promise<Subject | null> => {
         const [rows] = await db.execute(`SELECT * FROM materia WHERE id = ?;`, [id]);
 
@@ -30,6 +43,11 @@ const subjectService = {
         return subjects[0];
     },
 
+    /**
+     * Atualiza o nome e/ou o período de uma matéria existente (via ID).
+     * Monta a query UPDATE dinamicamente com base nos campos opcionais fornecidos.
+     * Retorna o objeto da matéria atualizada ou null se o ID não for encontrado.
+     */
     updateSubject: async(id: number, nome?: string, periodo?: number): Promise<Subject | null> => {
         const subject = await subjectService.getSubjectById(id);
 
@@ -51,20 +69,24 @@ const subjectService = {
             values.push(periodo);
         }
 
-        // Se nada foi enviado, retorna o próprio período
+        // Se nenhum campo foi atualizado.
         if (updates.length === 0) {
             return subject;
         }
 
-        // Adiciona o ID para o WHERE
+        // Adiciona o ID para a cláusula WHERE
         values.push(id);
 
         await db.execute(`UPDATE materia SET ${updates.join(", ")} WHERE id = ?;`, values);
 
-        // Retorna o objeto atualizado
+        // Retorna o objeto atualizado.
         return new Subject(id, nome ?? subject.nome! ,periodo ?? subject.periodo!);
     },
 
+    /**
+     * Remove uma matéria da tabela 'materia' com base no ID.
+     * Retorna { deleted: true } se a matéria foi removida ou null se o ID não for encontrado.
+     */
     deleteSubject: async(id: number): Promise<{ deleted: boolean } | null> => { 
         const subject = await subjectService.getSubjectById(id); //verifica a existência da disciplina
 

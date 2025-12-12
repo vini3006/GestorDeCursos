@@ -1,0 +1,155 @@
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --bg-light: #f4f7f9;
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --green-approved: #27ae60;
+    --red-failed: #c0392b;
+    --yellow-pf: #f39c12;
+}
+
+.evaluate-container {
+    padding: 100px 30px 30px; /* Padding ajustado para o header fixo */
+    background-color: var(--bg-light);
+    min-height: 100vh;
+}
+
+.page-title {
+    color: var(--primary-blue);
+    margin-bottom: 30px;
+    font-size: 2rem;
+    border-bottom: 2px solid var(--primary-orange);
+    padding-bottom: 10px;
+}
+
+/* --- Tabela de Notas --- */
+
+.grades-table-wrapper {
+    overflow-x: auto;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 25px;
+}
+
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.grades-table th, .grades-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle; 
+}
+
+.grades-table th {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.grades-table tbody tr:hover {
+    background-color: #f0f4f7;
+}
+
+/* --- Input de Notas --- */
+
+.grade-input {
+    width: 80px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.grade-input:focus {
+    border-color: var(--primary-orange);
+    outline: none;
+}
+
+/* --- Média Final e Status --- */
+
+.final-media {
+    font-weight: bold;
+}
+
+.approved {
+    color: var(--green-approved);
+}
+
+.pf-status {
+    color: var(--yellow-pf);
+}
+
+.failed {
+    color: var(--red-failed);
+}
+
+/* --- Botões de Ação --- */
+
+.save-student-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-weight: 500;
+    background-color: var(--green-approved);
+    color: var(--white);
+    transition: background-color 0.2s;
+}
+
+.save-student-btn:hover:not(:disabled) {
+    background-color: #2ecc71;
+}
+
+.save-student-btn:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
+
+.back-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 20px; 
+    background-color: #ecf0f1;
+    color: var(--primary-blue);
+    transition: background-color 0.2s;
+}
+
+.back-btn:hover:not(:disabled) {
+    background-color: #dbe4e7;
+}
+
+/* --- Mensagens de Erro/Dados --- */
+
+.error-box {
+    background-color: #fbe6e6;
+    color: var(--red-failed);
+    border: 1px solid var(--red-failed);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    color: #555;
+}

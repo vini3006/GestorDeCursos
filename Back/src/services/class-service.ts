@@ -103,7 +103,7 @@ const classService = {
     },
 
     getAllFromProfessor: async(cpfProfessor: string): Promise< { classes: Class[], hasClasses: boolean }> => {
-        const [classRows] = await db.execute(`SELECT * FROM turma WHERE cpfProfessor = ?;`, [cpfProfessor]);
+        const [classRows] = await db.execute(`SELECT t.id, t.cpfProfessor, t.numAlunos, t.maxAlunos, m.nome AS nomeMateria,  p.nome AS nomePeriodoLetivo FROM turma t JOIN materia m ON t.idMateria = m.id JOIN periodoLetivo p ON t.idPeriodoLetivo = p.id WHERE t.cpfProfessor = ?;`, [cpfProfessor]);
 
         const classes = classRows as Class[];
 

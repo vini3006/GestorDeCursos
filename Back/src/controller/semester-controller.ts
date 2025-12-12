@@ -1,9 +1,12 @@
-import { Request, Response } from "express"; //gerenciamento das requisições
-import semesterService from "../services/semester-service";
-import { Semester } from "../models/semester-model";
+import { Request, Response } from "express"; // Gerenciamento das requisições
+import semesterService from "../services/semester-service"; // Service para operações de Período Letivo.
+import { Semester } from "../models/semester-model"; // Modelo de Período Letivo.
 
 const semesterController = {
-    getAll: async(req: Request, res: Response) => { //lista todos os períodos presentes no BD
+    /**
+     * Lista todos os períodos letivos cadastrados no sistema.
+     */
+    getAll: async(req: Request, res: Response) => { // lista todos os períodos presentes no BD
         try {
             const semesters: Semester[] = await semesterService.getAll();
             return res.status(200).json(semesters);
@@ -13,7 +16,11 @@ const semesterController = {
         }
     },
 
-    createSemester: async(req: Request, res: Response) => { //insere um novo período de acordo com os dados passados pelo usuário  (administrador)
+    /**
+     * Cria um novo período letivo.
+     * Rota exclusiva para Administradores.
+     */
+    createSemester: async(req: Request, res: Response) => { // insere um novo período de acordo com os dados passados pelo usuário (administrador)
         const { nome, dataInicio, dataFim } = req.body;
 
         if(!nome || !dataInicio || !dataFim){
@@ -29,6 +36,10 @@ const semesterController = {
         }   
     },
 
+    /**
+     * Atualiza o nome, data de início e/ou data de fim de um período específico (ID).
+     * Rota exclusiva para Administradores.
+     */
     updateSemester: async(req:Request, res: Response) => {
         const { id } = req.params;
         const { nome, dataInicio, dataFim } = req.body;
@@ -51,6 +62,10 @@ const semesterController = {
         }
     },
 
+    /**
+     * Deleta um período letivo específico (ID).
+     * Rota exclusiva para Administradores.
+     */
     deleteSemester: async(req: Request, res: Response) => {
         const { id } = req.params;
 

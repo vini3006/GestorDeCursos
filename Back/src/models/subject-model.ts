@@ -1,13 +1,16 @@
-export class Subject{
+export class Subject{ // Definição da classe Matéria/Disciplina, representando a entidade na tabela 'materia'.
     public id?: number;
     public nome?: string;
     public periodo?: number;
-    public idCurso?: number;
+    public idCurso?: number; // Chave estrangeira que referencia a qual Curso a matéria pertence.
 
-    constructor(id: number, nome: string, periodo: number){
+    /**
+     * Construtor da classe Subject.
+     */
+    constructor(id: number, nome: string, periodo: number, idCurso: number){
         this.id = id;
         this.nome = nome;
         this.periodo = periodo;
-        this.idCurso = this.idCurso;
+        this.idCurso = idCurso;
     }
 }

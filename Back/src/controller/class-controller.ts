@@ -1,8 +1,12 @@
-import { Request, Response } from "express"; //gerenciamento das requisições
-import classService from "../services/class-service";
-import { Class } from "../models/class-model";
+import { Request, Response } from "express"; // Gerenciamento das requisições
+import classService from "../services/class-service"; // Service para operações de Turma.
+import { Class } from "../models/class-model"; // Modelo de Turma.
 
 const classController = {
+    /**
+     * Lista todas as turmas cadastradas no sistema.
+     * Acesso: Administrador ou Aluno.
+     */
     getAll: async(req: Request, res: Response) => {
         try{
             const classes = await classService.getAll();
@@ -13,6 +17,10 @@ const classController = {
         }
     },
 
+    /**
+     * Cria uma nova turma, garantindo que os dados de associação estejam presentes.
+     * Rota exclusiva para Administradores.
+     */
     createClass: async(req: Request, res: Response) => {
         const { idMateria, cpfProfessor, maxAlunos, idPeriodoLetivo, dataFechamentoFila } = req.body;
 
@@ -32,8 +40,12 @@ const classController = {
         }
     },
 
+    /**
+     * Permite ao aluno tentar a matrícula na turma. Se a turma estiver lotada, o aluno entra na fila de espera.
+     * Rota exclusiva para Alunos.
+     */
     tryEnrolling: async(req: Request, res: Response) => {
-        const cpfAluno = (req as any).user.cpf;
+        const cpfAluno = (req as any).user.cpf; // CPF do aluno é obtido do token.
         const { idTurma } = req.params;
 
         if (!idTurma || !cpfAluno) {
@@ -65,6 +77,7 @@ const classController = {
                 });
             }
             
+            // Retorno genérico para outras falhas de regra de negócio (ex: turma cheia sem fila ativa, data expirada).
             return res.status(400).json({ msg: "Inscrição não pôde ser realizada devido a um erro de regra de negócio." });
             
         } catch (err) {
@@ -72,6 +85,10 @@ const classController = {
         }
     },
 
+    /**
+     * Processa a fila de espera da turma, matriculando os alunos até atingir a capacidade máxima.
+     * Rota acessível por Administrador e Professor.
+     */
     processWaitingList: async(req: Request, res: Response) => { 
         const { idTurma } = req.params;
 
@@ -93,6 +110,10 @@ const classController = {
         }
     },
     
+    /**
+     * Lista todas as turmas associadas ao professor logado (obtido via CPF do token).
+     * Rota exclusiva para Professores.
+     */
     getAllFromProfessor: async(req: Request, res: Response) => {
         const cpfProfessor = (req as any).user.cpf;
 
@@ -109,6 +130,10 @@ const classController = {
         }
     },
 
+    /**
+     * Lista todos os alunos matriculados em uma turma específica (idTurma).
+     * Rota exclusiva para Professores.
+     */
     getAllStudentsFromClass: async(req: Request, res: Response) => {
         const { idTurma } = req.params;
 
@@ -125,6 +150,10 @@ const classController = {
         }
     },
 
+    /**
+     * Lança ou atualiza notas de avaliação (P1, P2, PF) de um aluno em uma turma.
+     * Rota exclusiva para Professores.
+     */
     evaluateStudent: async(req: Request, res: Response) => {
         const { idTurma, cpfAluno } = req.params;
         const { notaP1, notaP2, notaPF } = req.body;
@@ -146,6 +175,10 @@ const classController = {
         }
     },
 
+    /**
+     * Cadastra um novo material didático em uma turma.
+     * Rota exclusiva para Professores.
+     */
     registerMaterial: async(req: Request, res: Response) => {
         const cpfProfessor = (req as any).user.cpf;
         const { idTurma } = req.params;
@@ -168,6 +201,10 @@ const classController = {
         }
     },
 
+    /**
+     * Cadastra uma nova atividade avaliativa em uma turma.
+     * Rota exclusiva para Professores.
+     */
     registerActivity: async(req: Request, res: Response) => {
         const cpfProfessor = (req as any).user.cpf;
         const { idTurma } = req.params;
@@ -195,6 +232,10 @@ const classController = {
         }
     },
 
+    /**
+     * Lista os materiais didáticos de uma turma na qual o aluno logado está matriculado.
+     * Rota exclusiva para Alunos.
+     */
     getMaterialsFromClass: async(req: Request, res: Response) => {
         const cpfAluno = (req as any).user.cpf;
         const { idTurma } = req.params;
@@ -216,6 +257,10 @@ const classController = {
         }
     },
 
+    /**
+     * Lista as atividades avaliativas de uma turma na qual o aluno logado está matriculado.
+     * Rota exclusiva para Alunos.
+     */
     getActivitiesFromClass: async(req: Request, res: Response) => {
         const cpfAluno = (req as any).user.cpf;
         const { idTurma } = req.params;
@@ -237,6 +282,10 @@ const classController = {
         }
     },
 
+    /**
+     * Permite ao aluno logado enviar (entregar) uma atividade avaliativa.
+     * Rota exclusiva para Alunos.
+     */
     sendActivity: async(req: Request, res: Response) => {
         const cpfAluno = (req as any).user.cpf;
         const { idAtividade } = req.params;
@@ -259,12 +308,16 @@ const classController = {
         }
     },
 
+    /**
+     * Lista as atividades de uma turma, incluindo informações de entrega (visão do Professor).
+     * Rota exclusiva para Professores.
+     */
     getActivitiesFromClassProfessor: async(req: Request, res: Response) => {
         const cpfProfessor = (req as any).user.cpf;
         const { idTurma } = req.params;
 
         if(!idTurma || !cpfProfessor){
-            return res.status(400).json({msg: "Turma ou aluno não informados!"});
+            return res.status(400).json({msg: "Turma ou professor não informados!"});
         }
 
         try {
@@ -280,6 +333,10 @@ const classController = {
         }
     },
 
+    /**
+     * Lança a nota de uma atividade entregue por um aluno específico.
+     * Rota exclusiva para Professores.
+     */
     evaluateActivity: async(req: Request, res: Response) => {
         const cpfProfessor = (req as any).user.cpf;
         const { idAtividade, cpfAluno } = req.params;
@@ -303,6 +360,10 @@ const classController = {
         }
     }, 
     
+    /**
+     * Retorna as notas (P1, P2, PF, Média Final) do aluno logado em uma turma específica.
+     * Rota exclusiva para Alunos.
+     */
     getGrades: async(req: Request, res: Response) => {
         const cpfAluno = (req as any).user.cpf;
         const { idTurma } = req.params;
@@ -324,6 +385,10 @@ const classController = {
         }
     },
 
+    /**
+     * Retorna o histórico acadêmico completo do aluno logado.
+     * Rota exclusiva para Alunos.
+     */
     getAcademicRecord: async(req: Request, res: Response) => {
         const cpfAluno = (req as any).user.cpf;
 

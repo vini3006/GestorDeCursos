@@ -12,17 +12,17 @@ REQUISITOS DO SISTEMA DE GERENCIAMENTO ACADÊMICO
 
 1.2. Professores (Ações de Ensino e Avaliação):
    - Ter acesso às turmas em que estão vinculados. ✓	
-   - Cadastrar materiais de aula e atividades avaliativas (ex: trabalhos, provas, exercícios).
+   - Cadastrar materiais de aula e atividades avaliativas (ex: trabalhos, provas, exercícios). ✓
    - Avaliar os alunos e registrar suas notas. ✓
 
 1.3. Alunos (Ações de Estudo e Matrícula):
    - Se matricular em turmas abertas, respeitando o limite de vagas definido. ✓
    - Em caso de matrícula rejeitada, uma mensagem deverá ser automaticamente enviada ao professor responsável para avaliar a possibilidade de aumentar o quantitativo de vagas. ✓
    - Em caso de reprovação, ter prioridade na matrícula da respectiva turma em outro período letivo. ✓
-   - Só acessar os materiais e atividades das turmas em que estão matriculados. 
-   - Gerenciar respostas para as atividades avaliativas dentro do prazo estipulado pelo professor.
-   - Visualizar suas notas.
-   - Ter acesso ao histórico de cursos feitos, contendo as respectivas médias finais em todas as turmas.
+   - Só acessar os materiais e atividades das turmas em que estão matriculados. ✓
+   - Gerenciar respostas para as atividades avaliativas dentro do prazo estipulado pelo professor. ✓
+   - Visualizar suas notas. ✓
+   - Ter acesso ao histórico de cursos feitos, contendo as respectivas médias finais em todas as turmas. ✓
 
 1.4. Regras de Múltiplos Papéis:
    - Um usuário do sistema pode ter múltiplos papéis (ex: ser aluno e professor ao mesmo tempo). ✓
@@ -34,12 +34,12 @@ REQUISITOS DO SISTEMA DE GERENCIAMENTO ACADÊMICO
 2. CAPACIDADES DO SISTEMA (Relatórios e Funcionalidades)
 --------------------------------------------------------------------------------
 
-2.1. Listar a quantidade de alunos em cada turma de um determinado curso.
-2.2. Calcular a média geral de notas por turma de um determinado curso.
-2.3. Identificar os alunos com desempenho abaixo da média (< 5).
-2.4. Listar todas as turmas ativas de um determinado professor.
-2.5. Indicar o professor com o maior número de turmas ativas.
-2.6. Listar as 3 turmas que tiveram o melhor desempenho médio.
-2.7. Identificar professores que também são alunos.
-2.8. Identificar qual aluno fez mais cursos.
-2.9. Arquivar turmas que já atingiram a data de término do período letivo.
+2.1. Listar a quantidade de alunos em cada turma de um determinado curso. ✓
+2.2. Calcular a média geral de notas por turma de um determinado curso. 
+2.3. Identificar os alunos com desempenho abaixo da média (< 5). 
+2.4. Listar todas as turmas ativas de um determinado professor. 
+2.5. Indicar o professor com o maior número de turmas ativas. 
+2.6. Listar as 3 turmas que tiveram o melhor desempenho médio. 
+2.7. Identificar professores que também são alunos. 
+2.8. Identificar qual aluno fez mais cursos. 
+2.9. Arquivar turmas que já atingiram a data de término do período letivo. ✓
