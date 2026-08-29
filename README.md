@@ -86,7 +86,7 @@ O `db.sql` foi gerado por `mysqldump` de um servidor com GTID e binlog ativos, e
 grep -vE 'SQL_LOG_BIN|GTID_PURGED' db.sql | mysql -u root -p gestorDeCursos
 ```
 
-O dump cria as 13 tabelas, o trigger `trg_turma_para_historico` e insere uma conta de administrador de exemplo (matrícula e senha estão no `INSERT INTO conta` dentro do `db.sql`). Use essa conta no primeiro login para cadastrar os demais usuários, ou insira a sua diretamente na tabela `conta`.
+O dump cria as 13 tabelas, o trigger `trg_turma_para_historico` e insere uma conta de administrador com credenciais de placeholder (matrícula `ADMIN001`, senha `trocar-esta-senha`). Faça login com ela no primeiro acesso, troque a senha e cadastre os demais usuários.
 
 Observações:
 

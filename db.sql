@@ -78,7 +78,7 @@ CREATE TABLE `conta` (
 
 LOCK TABLES `conta` WRITE;
 /*!40000 ALTER TABLE `conta` DISABLE KEYS */;
-INSERT INTO `conta` VALUES ('REDACTED','REDACTED','administrador','00000000000','2025-12-11 22:08:25');
+INSERT INTO `conta` VALUES ('ADMIN001','trocar-esta-senha','administrador','00000000000','2025-01-01 00:00:00');
 /*!40000 ALTER TABLE `conta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,7 +438,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES ('00000000000','Vinícius Oliveira Barros','2006-06-30','viniobarros3006@gmail.com');
+INSERT INTO `usuario` VALUES ('00000000000','Administrador do Sistema','2000-01-01','admin@example.com');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
