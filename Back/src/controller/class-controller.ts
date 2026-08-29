@@ -407,6 +407,30 @@ const classController = {
             console.error(err);
             return res.status(500).json({msg: "Erro ao buscar histórico!"});
         }
+    },
+
+    /**
+ * Lista as turmas ativas nas quais o aluno logado está matriculado, incluindo o nome da matéria e período.
+ * Rota exclusiva para Alunos.
+ */
+    getActiveClassesForStudent: async (req: Request, res: Response) => {
+        // O CPF é pego do token do usuário logado (assumindo que você usa middleware 'auth')
+        const cpfAluno = (req as any).user.cpf; 
+
+        if (!cpfAluno) {
+            return res.status(400).json({ msg: "CPF do aluno não encontrado no token!" });
+        }
+
+        try {
+            const classes = await classService.getActiveClassesForStudent(cpfAluno);
+
+            // Se o resultado for um array vazio, o aluno não tem turmas ativas, o que é um resultado válido.
+            return res.status(200).json(classes);
+
+        } catch (err) {
+            console.error("Erro ao buscar turmas ativas do aluno:", err);
+            return res.status(500).json({ msg: "Erro interno ao buscar turmas ativas." });
+        }
     }
 }
 

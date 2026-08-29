@@ -3,12 +3,25 @@ import { Class } from "../models/class-model"
 import queueService from "./queue-service";
 
 const classService = {
-    getAll: async(): Promise<Class[]> => {
-        const [rows] = await db.execute(`SELECT * FROM turma;`);
+    getAll: async(): Promise<any[]> => {
+        const [rows]: any = await db.execute(`
+            SELECT 
+                t.*, 
+                m.nome AS nomeMateria, 
+                p.nome AS nomePeriodo, 
+                u.nome AS nomeProfessor 
+            FROM turma t
+            -- JOIN para o nome da Matéria
+            JOIN materia m ON t.idMateria = m.id
+            -- JOIN para o nome do Período
+            JOIN periodoLetivo p ON t.idPeriodoLetivo = p.id 
+            -- JOIN para o nome do Professor
+            JOIN usuario u ON t.cpfProfessor = u.cpf
+            ORDER BY t.dataFechamentoFila ASC;
+        `);
 
-        const classes = rows as Class[];
-
-        return classes;
+        // O controller espera um array de classes, e é isso que ele recebe.
+        return rows;
     },
 
     createClass: async(idMateria: number, cpfProfessor: string, maxAlunos: number, idPeriodoLetivo: number, dataFechamentoFila:Date): Promise<Class> => {
@@ -20,25 +33,25 @@ const classService = {
     },
 
     tryEnrolling: async(cpfAluno: string, idTurma: number): Promise<{ status: 'INSERTED' | 'ALREADY_QUEUED' | 'PROFESSOR_BLOCKED' | 'NOT_FOUND' }> => {
-    const [classRows]: any = await db.execute(`SELECT cpfProfessor FROM turma WHERE id = ?;`, [idTurma]);
+        const [classRows]: any = await db.execute(`SELECT cpfProfessor FROM turma WHERE id = ?;`, [idTurma]);
 
-    if (classRows.length === 0){
-        return { status : 'NOT_FOUND' };
-    }
-
-    const cpfProfessor = classRows[0].cpfProfessor;
-
-    if (cpfProfessor === cpfAluno){
-        return { status: 'PROFESSOR_BLOCKED' };
-    }
-
-    const inserted = await queueService.insertInQueue(cpfAluno, idTurma);
-
-        if (inserted) {
-            return { status: 'INSERTED' };
-        } else {
-            return { status: 'ALREADY_QUEUED' };
+        if (classRows.length === 0){
+            return { status : 'NOT_FOUND' };
         }
+
+        const cpfProfessor = classRows[0].cpfProfessor;
+
+        if (cpfProfessor === cpfAluno){
+            return { status: 'PROFESSOR_BLOCKED' };
+        }
+
+        const inserted = await queueService.insertInQueue(cpfAluno, idTurma);
+
+            if (inserted) {
+                return { status: 'INSERTED' };
+            } else {
+                return { status: 'ALREADY_QUEUED' };
+            }
     },
 
     processWaitingList: async(idTurma: number): Promise<{ processed: boolean, inserted: number}> => {
@@ -201,27 +214,48 @@ const classService = {
         return { id: result.insertId, idTurma, titulo, descricao, dataFechamento, notaMaxima };
     },
 
-    getMaterialsFromClass: async(cpfAluno: string, idTurma: number): Promise<any | null> => {
-        const[enrollRows]: any = await db.execute(`SELECT * FROM matriculas WHERE cpfAluno = ? AND idTurma = ?;`, [cpfAluno, idTurma]);
+    getMaterialsFromClass: async(cpfAluno: string, idTurma: number): Promise<any[] | null> => {
+        // 1. Verifica se o aluno está matriculado
+        const [enrollRows]: any = await db.execute(
+            `SELECT * FROM matriculas WHERE cpfAluno = ? AND idTurma = ?;`, 
+            [cpfAluno, idTurma]
+        );
 
-        if(enrollRows.length === 0){
-            return null;
+        if (enrollRows.length === 0) {
+            return null; // Aluno não está matriculado na turma
         }
-
-        const[materials]: any = await db.execute(`SELECT * FROM material WHERE idTurma = ? ORDER BY dataPostagem DESC;`, [idTurma]);
-
+        
+        // 2. Busca o nome da matéria E os materiais em uma única query (JOINs)
+        // Usamos um LEFT JOIN se for mais simples, mas se a turma não existir, a matrícula falharia.
+        // Usaremos um JOIN limpo para garantir que a turma seja válida.
+        const [materials]: any = await db.execute(`
+            SELECT 
+                mat.*,
+                m.nome AS className  -- 🚨 Nome da Matéria inserido em cada linha
+            FROM material mat
+            JOIN turma t ON mat.idTurma = t.id
+            JOIN materia m ON t.idMateria = m.id
+            WHERE mat.idTurma = ? 
+            ORDER BY mat.dataPostagem DESC;
+        `, [idTurma]);
+        
         return materials;
-    },
+    },  
 
-    getActivitiesFromClass: async(cpfAluno: string, idTurma: number): Promise<any | null> => {
-        const[enrollRows]: any = await db.execute(`SELECT * FROM matriculas WHERE cpfAluno = ? AND idTurma = ?;`, [cpfAluno, idTurma]);
+    getActivitiesFromClass: async(cpfAluno: string, idTurma: number): Promise<any[] | null> => {
+        // 1. Verifica se o aluno está matriculado
+        const [enrollRows]: any = await db.execute(
+            `SELECT * FROM matriculas WHERE cpfAluno = ? AND idTurma = ?;`, 
+            [cpfAluno, idTurma]
+        );
 
-        if(enrollRows.length === 0){
-            return null;
+        if (enrollRows.length === 0) {
+            return null; // Aluno não está matriculado na turma
         }
-
-        const[activities]: any = await db.execute(`SELECT * FROM atividade_avaliativa WHERE idTurma = ? ORDER BY dataFechamento ASC;`, [idTurma]);
-
+        
+        // 2. Busca as atividades AVALIATIVAS e faz JOIN para obter o nome da matéria
+        const [activities]: any = await db.execute(`SELECT aa.*,m.nome AS className FROM atividade_avaliativa aa JOIN turma t ON aa.idTurma = t.id JOIN materia m ON t.idMateria = m.id WHERE aa.idTurma = ? ORDER BY aa.dataFechamento ASC;`, [idTurma]);
+        
         return activities;
     },
 
@@ -287,7 +321,7 @@ const classService = {
     },
 
     getAcademicRecord: async(cpfAluno: string): Promise<any | null> => {    
-        const query = `SELECT h.notaFinal, h.situacao, h.dataConclusao, m.nome AS nomeMateria, p.nome AS nomePeriodo FROM historico_alunos h JOIN materia m ON m.id = h.idMateria JOIN periodoLetivo p ON p.id = m.idPeriodoLetivo WHERE h.cpfAluno = ?;`
+        const query = `SELECT h.notaFinal, h.situacao, h.dataConclusao, m.nome AS nomeMateria, p.nome AS nomePeriodo FROM historico_alunos h JOIN materia m ON m.id = h.idMateria JOIN periodoLetivo p ON p.id = h.idPeriodoLetivo WHERE h.cpfAluno = ?;`
 
         const [recordRows]: any = await db.execute(query, [cpfAluno]);
 
@@ -296,7 +330,13 @@ const classService = {
         }
 
         return recordRows;
-    }
+    },
+
+    getActiveClassesForStudent: async (cpfAluno: string): Promise<any[]> => {  
+        const [classRows]: any = await db.execute(`SELECT t.id, m.nome AS nomeMateria, pl.nome AS nomePeriodo, mat.mediaFinal FROM matriculas mat JOIN turma t ON mat.idTurma = t.id JOIN materia m ON t.idMateria = m.id JOIN periodoLetivo pl ON t.idPeriodoLetivo = pl.id WHERE mat.cpfAluno = ?;`, [cpfAluno]);
+
+        return classRows;
+    },
 }
 
-export default classService;
+export default classService

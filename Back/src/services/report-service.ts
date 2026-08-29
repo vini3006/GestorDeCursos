@@ -38,7 +38,7 @@ const reportService = {
      * Retorna nome da matéria, nome do período e a média.
      */
     avgGradesPerSemesterFromSubject: async(idMateria: number): Promise<Array<{ nomeMateria: string, nomePeriodo: string, media: number }>> => {
-        const [avgRows]: any = await db.execute(`SELECT m.nome AS nomeMateria, p.nome AS nomePeriodo, AVG(h.notaFinal) AS media FROM historico_alunos h INNER JOIN materia m ON m.id = h.idMateria INNER JOIN periodoLetivo p ON p.id = h.idPeriodoLetivo WHERE h.idMateria = ? GROUP BY m.nome, p.nome, h.idPeriodoLetivo;`);
+        const [avgRows]: any = await db.execute(`SELECT m.nome AS nomeMateria, p.nome AS nomePeriodo, AVG(h.notaFinal) AS media FROM historico_alunos h INNER JOIN materia m ON m.id = h.idMateria INNER JOIN periodoLetivo p ON p.id = h.idPeriodoLetivo WHERE h.idMateria = ? GROUP BY m.nome, p.nome, h.idPeriodoLetivo;`, [idMateria]);
 
         return avgRows;
     },

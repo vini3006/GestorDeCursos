@@ -11,6 +11,14 @@ import ManageSubjects from "../pages/adminDashboard/manageEducation/manageSubjec
 import ManageClasses from "../pages/adminDashboard/manageEducation/manageClasses/manageClasses"
 import ProfessorDashboard from "../pages/professorDashboard/professorDashboard"
 import EvaluateStudentsPage from "../pages/professorDashboard/evaluateStudents/evaluateStudents"
+import RegisterResource from "../pages/professorDashboard/registerResources/registerResources"
+import ViewSubmissions from "../pages/professorDashboard/viewSubmissions/viewSubmissions"
+import StudentDashboard from "../pages/studentDashboard/studentDashboard"
+import ViewActiveClasses from "../pages/studentDashboard/viewActiveClasses/viewActiveClasses"
+import ViewMaterials from "../pages/studentDashboard/viewActiveClasses/viewMaterials/viewMaterials"
+import ViewActivities from "../pages/studentDashboard/viewActiveClasses/viewActivities/viewActivities"
+import ManageEnrollments from "../pages/studentDashboard/manageEnrollments/manageEnrollments"
+import ViewAcademicRecord from "../pages/studentDashboard/viewAcademicRecord/viewAcademicRecord"
 
 const Rotas = () => {
     return (
@@ -71,10 +79,51 @@ const Rotas = () => {
                     path="/professor/turma/:idTurma/avaliar-alunos"
                     element={<EvaluateStudentsPage/>}
                 />
+
+                <Route
+                    path="/professor/turma/:idTurma/cadastrar-recursos"
+                    element={<RegisterResource/>}
+                />
+
+                <Route
+                    path="/professor/turma/:idTurma/ver-entregas"
+                    element={<ViewSubmissions />}
+                />
+
+                <Route
+                    path="/student/dashboard"
+                    element={<StudentDashboard />}
+                />
+
+                <Route
+                    path="/student/active-classes"
+                    element={<ViewActiveClasses />}
+                />
+
+                <Route
+                    path="/student/classes/:idTurma/materials"
+                    element={<ViewMaterials />}
+                />
+
+                <Route
+                    path="/student/classes/:idTurma/activities"
+                    element={<ViewActivities />}
+                />
+
+                <Route
+                    path="/student/enroll"
+                    element={<ManageEnrollments />}
+                />
+
+                <Route
+                    path="/student/academic-record"
+                    element={<ViewAcademicRecord />}
+                />
                 </Routes>        
             </BrowserRouter>
         </React.StrictMode>
     )
 }   
+
 
 export default Rotas;

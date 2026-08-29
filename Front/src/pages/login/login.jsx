@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { jwtDecode } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode';
 import './login.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   
-  // Mantive seus estados iguais
   const [formData, setFormData] = useState({
     matricula: '',
     password: '',
@@ -18,7 +17,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: '', type: '' });
 
-useEffect(() => {
+  // 1. Checa se o usuário JÁ está logado e redireciona imediatamente (na montagem)
+  useEffect(() => {
     const token = localStorage.getItem('token');
     const userString = localStorage.getItem('user');
 
@@ -26,13 +26,12 @@ useEffect(() => {
         try {
             const user = JSON.parse(userString);
             
-            // 🌟 NOVO: Verifica o tipo do usuário logado 🌟
             if (user.tipo === 'administrador') {
                 navigate('/admin/dashboard', { replace: true });
             } else if(user.tipo === 'professor'){
                 navigate('/professor/dashboard', { replace: true }); 
-            } else {
-                navigate('/', { replace: true })
+            } else if (user.tipo === 'aluno'){
+                navigate('/student/dashboard', { replace: true }); 
             }
         } catch (e) {
             // Limpa dados se houver erro no JSON e mantém na tela de login
@@ -40,7 +39,7 @@ useEffect(() => {
             localStorage.removeItem('user');
         }
     }
-}, [navigate]);
+  }, [navigate]); // Roda apenas na montagem
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
@@ -51,13 +50,9 @@ useEffect(() => {
 
   const validateForm = () => {
     const newErrors = {};
-
-    // 1. Validação da Matrícula
     if (!formData.matricula) {
-      newErrors.matricula = 'Matrícula é obrigatória'; // Ajuste a mensagem
+      newErrors.matricula = 'Matrícula é obrigatória';
     }
-
-    // 2. Validação da Senha (Se for Login)
     if (isLogin) {
       if (!formData.password) {
         newErrors.password = 'Senha é obrigatória';
@@ -65,7 +60,6 @@ useEffect(() => {
         newErrors.password = 'Senha deve ter no mínimo 6 caracteres';
       }
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -81,14 +75,13 @@ useEffect(() => {
     }
   };
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) return;
 
     setLoading(true);
-    setMessage({ text: '', type: '' });
+    setMessage({ text: '', type: '' }); // Limpa qualquer mensagem antiga
 
     try {
       const response = await api.post('users/login', {
@@ -101,23 +94,25 @@ useEffect(() => {
       const decodedToken = jwtDecode(token);
       const userTipo = decodedToken.tipo;
       
-      // 1. Salva os dados no localStorage
+      // Salva os dados no localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify({ tipo: userTipo, matricula: decodedToken.matricula, cpf: decodedToken.cpf }));
-      
-      setMessage({ text: 'Login realizado com sucesso!', type: 'success' });
-      
-      // 2. 🌟 REDIRECIONAMENTO IMEDIATO E COMPLETO AQUI 🌟
-      //    Remove o setTimeout, pois ele não é necessário.
+    
+      let redirectPath = '/';
 
       if (userTipo === 'administrador') {
-          navigate('/admin/dashboard', { replace: true });
+          redirectPath = '/admin/dashboard';
       } else if (userTipo === 'professor') {
-          navigate('/professor/dashboard', { replace: true }); 
-      } else {
-          // Se for 'aluno' ou outro tipo não especificado
-          navigate('/', { replace: true }); 
+          redirectPath = '/professor/dashboard'; 
+      } else if (userTipo === 'aluno') {
+          redirectPath = '/student/dashboard'; 
       }
+      
+      // Navega imediatamente, sem delay.
+      navigate(redirectPath, { replace: true });
+      
+      // O bloco finally será executado, mas o state (loading) não será mais visto
+      // já que a página será trocada.
       
     } catch (error) {
       console.error('Erro ao fazer login:', error);
@@ -128,11 +123,14 @@ useEffect(() => {
         text: errorMsg, 
         type: 'error' 
       });
+      setLoading(false); // Garante que o botão seja reativado em caso de erro
     } finally {
-      setLoading(false);
+      // Se a navegação for bem-sucedida, este bloco é irrelevante visualmente.
+      // Se houver erro, a linha no catch garante o setLoading(false).
     }
-};
-  // -------------------------------------
+  };
+
+  // ... (Restante do componente)
 
   const handlePasswordRecovery = async (e) => {
     e.preventDefault();
@@ -151,6 +149,7 @@ useEffect(() => {
           </p>
         </div>
 
+        {/* Mensagens de erro continuam, mas a de sucesso será evitada */}
         {message.text && (
           <div className={`message ${message.type}`}>
             {message.text}

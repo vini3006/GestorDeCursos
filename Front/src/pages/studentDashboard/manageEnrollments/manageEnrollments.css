@@ -1,0 +1,148 @@
+ /*
+ * manageEnrollments.css
+ * Estilos para a página de Gerenciamento de Matrículas (Turmas Abertas).
+ */
+
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --gray-bg: #f4f4f9;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --green-success: #2ecc71;
+    --red-alert: #e74c3c;
+    --yellow-warning: #f1c40f;
+}
+
+.enrollments-container {
+    padding: 90px 40px 40px 40px;
+    min-height: 100vh;
+    background-color: var(--gray-bg);
+    box-sizing: border-box;
+}
+
+.dashboard-title {
+    color: var(--primary-blue);
+    margin: 0;
+    font-size: 2rem;
+    border-bottom: 2px solid var(--primary-orange);
+    padding-bottom: 15px;
+}
+
+.dashboard-subtitle {
+    color: #555;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* ------------------ Grid e Cards ------------------ */
+
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.class-card {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s;
+    border-left: 5px solid var(--primary-blue);
+}
+
+.class-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    margin: 0 0 5px 0;
+}
+
+.card-subtitle {
+    color: #777;
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+}
+
+.class-details p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.closing-date {
+    font-weight: 600;
+    color: var(--primary-orange);
+}
+
+.card-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #eee;
+}
+
+.action-btn.primary {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 1rem;
+    background-color: var(--green-success);
+    color: var(--white);
+}
+
+.action-btn.primary:hover:not(:disabled) {
+    background-color: #27ae60;
+}
+
+.action-btn.primary:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+/* ------------------ Mensagens de Estado ------------------ */
+
+.loading-text, .no-data-message {
+    text-align: center;
+    padding: 20px;
+    color: #888;
+    font-style: italic;
+}
+
+.message {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.message.error {
+    background-color: #fcebeb;
+    color: var(--red-alert);
+    border: 1px solid var(--red-alert);
+}
+
+.message.success {
+    background-color: #e9faed;
+    color: var(--green-success);
+    border: 1px solid var(--green-success);
+}
+
+.message.warning {
+    background-color: #fffac8;
+    color: #a07d00;
+    border: 1px solid var(--yellow-warning);
+}

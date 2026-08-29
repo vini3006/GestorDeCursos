@@ -11,12 +11,13 @@ router.post("/admin", auth, allowRoles("administrador"), classController.createC
 router.put("/processQueue/:idTurma", auth, allowRoles("administrador", "professor"), classController.processWaitingList); // Processa a fila de espera de uma turma (Admin/Professor).
 
 // Rotas de Aluno
+router.get("/student/record", auth, allowRoles("aluno"), classController.getAcademicRecord); // Visualiza o histórico acadêmico do aluno.
+router.get("/student", auth, allowRoles("aluno"), classController.getActiveClassesForStudent) // Busca todas as turmas ativas do aluno
 router.post("/student/:idTurma", auth, allowRoles("aluno"), classController.tryEnrolling); // Tenta se matricular em uma turma; se lotada, entra na fila.
 router.get("/student/materials/:idTurma", auth, allowRoles("aluno"), classController.getMaterialsFromClass); // Lista materiais didáticos de uma turma.
 router.get("/student/activities/:idTurma", auth, allowRoles("aluno"), classController.getActivitiesFromClass); // Lista atividades avaliativas de uma turma.
 router.post("/student/activities/send/:idAtividade", auth, allowRoles("aluno"), classController.sendActivity); // Envia a entrega de uma atividade avaliativa.
 router.get("/student/:idTurma/grades", auth, allowRoles("aluno"), classController.getGrades); // Visualiza notas de P1, P2, PF e média final na turma.
-router.get("/student/academicrecord", auth, allowRoles("aluno"), classController.getAcademicRecord); // Visualiza o histórico acadêmico do aluno.
 
 // Rotas de Professor
 router.get("/professor", auth, allowRoles("professor"), classController.getAllFromProfessor); // Lista todas as turmas de um professor logado.

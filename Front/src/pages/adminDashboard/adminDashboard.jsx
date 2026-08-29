@@ -1,15 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './adminDashboard.css'; // Importa o novo CSS
+import './adminDashboard.css'; 
 import AdminHeader from '../../components/AdminHeader';
+
 // -------------------------------------------------------------
-// DADOS DE NAVEGAÇÃO
+// DADOS DE NAVEGAÇÃO COM DESCRIÇÕES
 // -------------------------------------------------------------
 const navButtons = [
-  { label: 'Gerenciar Usuários', path: '/admin/users', icon: '👤' },
-  { label: 'Gerenciar Ensino', path: '/admin/education', icon: '📚' },
-  { label: 'Gerenciar Períodos Letivos', path: '/admin/semesters', icon: '🗓️' },
-  { label: 'Ver Dados', path: '/admin/data', icon: '📊' },
+  { 
+    label: 'Gerenciar Usuários', 
+    path: '/admin/users', 
+    icon: '👤', 
+    description: 'Adicione, edite ou remova contas de alunos, professores e administradores do sistema.' 
+  },
+  { 
+    label: 'Gerenciar Ensino', 
+    path: '/admin/education', 
+    icon: '📚', 
+    description: 'Crie e edite matérias, turmas, e defina a estrutura curricular da instituição.' 
+  },
+  { 
+    label: 'Gerenciar Períodos Letivos', 
+    path: '/admin/semesters', 
+    icon: '🗓️', 
+    description: 'Crie e gerencie os períodos (semestres) ativos e passados, definindo suas datas de início e fim.' 
+  },
+  { 
+    label: 'Ver Dados', 
+    path: '/admin/data', 
+    icon: '📊', 
+    description: 'Acesse relatórios e estatísticas consolidadas sobre matrículas, turmas e desempenho geral.' 
+  },
 ];
 
 const AdminDashboard = () => {
@@ -39,7 +60,8 @@ const AdminDashboard = () => {
 
         <div className="button-grid">
           {navButtons.map(button => (
-            // A key é o caminho, garantindo que seja única
+            // Se o seu CSS do AdminDashboard ainda não tiver a classe .button-description, 
+            // você precisará adicioná-la ou adaptar o AdminDashboard.css.
             <button 
               key={button.path} 
               className="dashboard-nav-button"
@@ -48,6 +70,7 @@ const AdminDashboard = () => {
             >
               <span className="button-icon">{button.icon}</span>
               <span className="button-label">{button.label}</span>
+              <span className="button-description">{button.description}</span> {/* 🚨 DESCRIÇÃO ADICIONADA */}
             </button>
           ))}
         </div>

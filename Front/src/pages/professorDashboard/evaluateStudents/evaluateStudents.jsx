@@ -104,19 +104,19 @@ const EvaluateStudentsPage = () => {
 
         // Prepara o payload, enviando apenas os campos com notas
         const payload = {
-            notaP1: student.notaP1,
-            notaP2: student.notaP2,
-            notaPF: student.notaPF,
+            notaP1: parseFloat(student.notaP1),
+            notaP2: parseFloat(student.notaP2),
+            notaPF: parseFloat(student.notaPF),
         };
         
         try {
             const token = localStorage.getItem('token');
-            // Rota: PATCH /professor/students/:idTurma/:cpfAluno
-            const response = await api.patch(`/professor/students/${idTurma}/${student.cpfAluno}`, payload, {
+            // Rota: PATCH /class/professor/students/:idTurma/:cpfAluno
+            const response = await api.patch(`/class/professor/students/${idTurma}/${student.cpfAluno}`, payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             
-            // O backend retorna o objeto atualizado (com a média final OFICIAL)
+            // O backend retorna o objeto atualizado    
             const updatedData = response.data;
 
             setStudents(prevStudents => 
@@ -131,7 +131,6 @@ const EvaluateStudentsPage = () => {
 
         } catch (err) {
             console.error(`Erro ao salvar notas do aluno ${student.cpfAluno}:`, err);
-            // Mensagem de erro mais amigável
             setError(`Falha ao salvar notas de ${student.nome}. Verifique a conexão e as regras de negócio.`);
         } finally {
             // Remove o status de salvamento

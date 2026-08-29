@@ -1,0 +1,184 @@
+/* ViewSubmissions.css */
+
+.submissions-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.submissions-container h1 {
+    color: #343a40;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 10px;
+}
+
+/* Lista de Atividades */
+.activities-list h3 {
+    margin-top: 30px;
+    color: #495057;
+}
+
+.activity-card {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-card:hover {
+    background-color: #e2f0ff; /* Light blue hover */
+    border-color: #007bff;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.1);
+}
+
+.activity-card.selected {
+    background-color: #cfe2ff; /* Selected blue */
+    border-left: 5px solid #007bff;
+}
+
+.activity-card h4 {
+    margin: 0;
+    color: #007bff;
+}
+
+.activity-card p {
+    margin: 5px 0 0 0;
+    font-size: 0.9em;
+}
+
+/* Botão de Visualização */
+.view-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.view-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Detalhes das Entregas */
+.submissions-detail {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.submissions-detail h2 {
+    color: #007bff;
+    margin-bottom: 15px;
+}
+
+.max-score {
+    font-weight: bold;
+    color: #28a745;
+    margin-bottom: 20px;
+}
+
+/* Tabela */
+.submissions-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.submissions-table th, .submissions-table td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.submissions-table th {
+    background-color: #e9ecef;
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Coluna de Nota Atual */
+.current-score {
+    font-weight: bold;
+    color: #dc3545; /* Cor para indicar que precisa de avaliação */
+}
+
+/* Link de Entrega */
+.link-entrega {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.link-entrega:hover {
+    text-decoration: underline;
+}
+
+.no-submission {
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Input de Nota */
+.score-input-cell input {
+    width: 80px;
+    padding: 6px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    text-align: center;
+}
+
+/* Botão de Avaliação */
+.evaluate-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 100px;
+}
+
+.evaluate-btn:not(:disabled) {
+    background-color: #28a745;
+    color: white;
+}
+
+.evaluate-btn:not(:disabled):hover {
+    background-color: #218838;
+}
+
+.evaluate-btn.loading {
+    background-color: #ffc107;
+    color: #343a40;
+    cursor: not-allowed;
+}
+
+.evaluate-btn.success {
+    background-color: #17a2b8;
+    color: white;
+    cursor: not-allowed;
+}
+
+.evaluate-btn.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+.evaluate-btn:disabled {
+    background-color: #adb5bd;
+    cursor: not-allowed;
+}

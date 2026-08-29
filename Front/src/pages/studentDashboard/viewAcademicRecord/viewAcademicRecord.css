@@ -1,0 +1,136 @@
+/*
+ * viewAcademicRecord.css
+ * Estilos para a página de visualização do Histórico Acadêmico.
+ */
+
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --gray-bg: #f4f4f9;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --green-approved: #27ae60;
+    --red-failed: #c0392b;
+    --yellow-pending: #f39c12;
+}
+
+.record-container {
+    padding: 90px 40px 40px 40px;
+    min-height: 100vh;
+    background-color: var(--gray-bg);
+    box-sizing: border-box;
+}
+
+/* ------------------ Header e Títulos ------------------ */
+
+.record-header {
+    border-bottom: 2px solid var(--primary-orange);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.header-title {
+    color: var(--primary-blue);
+    margin: 0;
+    font-size: 2rem;
+}
+
+.header-subtitle {
+    color: #555;
+    margin-top: 5px;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+/* ------------------ Tabela de Histórico ------------------ */
+
+.record-table-wrapper {
+    overflow-x: auto; /* Garante scroll em telas pequenas */
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    padding: 1px; /* Espaçamento interno sutil */
+}
+
+.academic-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Garante que a tabela não fique muito estreita */
+}
+
+.academic-table th, .academic-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.academic-table th {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.academic-table tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* Estilos de Colunas Específicas */
+
+.materia-cell {
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.note-cell {
+    font-weight: 700;
+}
+
+/* Estilos de Situação (Aprovado/Reprovado) */
+
+.status-approved {
+    font-weight: 700;
+    color: var(--green-approved);
+}
+
+.status-failed {
+    font-weight: 700;
+    color: var(--red-failed);
+}
+
+.status-pending {
+    font-weight: 700;
+    color: var(--yellow-pending);
+}
+
+/* ------------------ Mensagens de Estado ------------------ */
+
+.loading-text, .no-data-message {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.message.error {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    background-color: #fcebeb;
+    color: var(--red-failed);
+    border: 1px solid var(--red-failed);
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    .record-container {
+        padding: 80px 10px 20px 10px;
+    }
+
+    .academic-table th, .academic-table td {
+        padding: 10px 8px;
+        font-size: 0.85rem;
+    }
+}

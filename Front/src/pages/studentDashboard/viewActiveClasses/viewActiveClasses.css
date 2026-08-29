@@ -1,0 +1,211 @@
+/*
+ * viewActiveClasses.css
+ * Estilos para a listagem de Turmas Ativas E o Modal de Notas (Integrado)
+ */
+
+/* Variáveis para consistência */
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --gray-bg: #f4f4f9;
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ------------------ Layout Principal ------------------ */
+
+.main-content-classes {
+    padding: 90px 40px 40px 40px; /* Mantém espaço para o header fixo */
+    min-height: 100vh;
+    background-color: var(--gray-bg);
+    box-sizing: border-box;
+}
+
+.dashboard-title {
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.dashboard-subtitle {
+    color: #555;
+    margin-bottom: 30px;
+    font-size: 1rem;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+/* ------------------ Grid e Cards de Turmas ------------------ */
+
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.class-card {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.class-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.card-subtitle {
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ------------------ Botões de Ação ------------------ */
+
+.action-btn {
+    padding: 8px 15px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.action-btn.primary {
+    background-color: var(--primary-blue);
+    color: var(--white);
+}
+
+.action-btn.primary:hover {
+    background-color: #34495e;
+}
+
+.action-btn.secondary {
+    background-color: var(--primary-orange);
+    color: var(--white);
+}
+
+.action-btn.secondary:hover {
+    background-color: #d66518;
+}
+
+.no-data-message, .loading-text {
+    grid-column: 1 / -1; 
+    text-align: center;
+    padding: 20px;
+    color: #888;
+}
+
+/* ------------------ ESTILOS DO MODAL (INTEGRADO) ------------------ */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    max-height: 90vh; /* Limita a altura para caber na tela */
+    overflow-y: auto;
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.close-button:hover {
+    color: var(--primary-blue);
+}
+
+.modal-title {
+    color: var(--primary-blue);
+    border-bottom: 2px solid var(--primary-orange);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+}
+
+.grades-table th, .grades-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.grades-table th {
+    background-color: #f2f2f2;
+    color: var(--primary-blue);
+}
+
+.final-result {
+    padding: 15px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    background-color: #fffaf7; /* Leve fundo para destaque */
+}
+
+.final-result p {
+    margin: 8px 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    display: flex;
+    justify-content: space-between;
+}
+
+.final-result span {
+    font-weight: 700;
+}
+
+/* Estilos de Situação */
+.situation-aprovado { color: #27ae60; }
+.situation-reprovado { color: #c0392b; }
+.situation-em { color: #f39c12; }
+
+.loading-message {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}

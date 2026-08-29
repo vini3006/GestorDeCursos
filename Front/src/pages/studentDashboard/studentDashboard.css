@@ -1,0 +1,104 @@
+/* studentDashboard.css - Novo Estilo de Dashboard com botões (Estilo Admin) */
+
+:root {
+    --primary-blue: #2C3E50;
+    --primary-orange: #F47920;
+    --white: #FFFFFF;
+    --gray-bg: #ecf0f1; /* Cor de fundo mais clara para o corpo */
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-hover: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.student-layout-simple {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--gray-bg);
+}
+
+/* ------------------ Conteúdo Principal ------------------ */
+
+.main-content-buttons {
+    flex-grow: 1;
+    padding: 100px 30px 60px 30px; /* Padding superior para o header fixo */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.dashboard-title {
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.dashboard-subtitle {
+    color: #555;
+    font-size: 1.1rem;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* ------------------ Grid de Botões ------------------ */
+
+.button-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    width: 100%;
+}
+
+.dashboard-nav-button {
+    background-color: var(--white);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: 12px;
+    padding: 30px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%; /* Garante que todos os cards tenham a mesma altura */
+}
+
+.dashboard-nav-button:hover {
+    background-color: #f6f6f6;
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.button-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.button-label {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--primary-orange); /* Destaque para o rótulo */
+}
+
+.button-description {
+    font-size: 0.95rem;
+    color: #777;
+    line-height: 1.4;
+}
+
+/* ------------------ Footer ------------------ */
+
+.student-footer-simple {
+    padding: 15px;
+    background-color: var(--primary-blue);
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    font-size: 0.8rem;
+    width: 100%;
+}

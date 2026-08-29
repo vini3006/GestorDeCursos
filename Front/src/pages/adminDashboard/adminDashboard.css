@@ -200,3 +200,19 @@ body {
   color: #E74C3C;
   border: 1px solid #E74C3C;
 }
+
+/* Exemplo de estilo a ser adicionado ou verificado no adminDashboard.css */
+.button-description {
+    font-size: 0.95rem; /* Um pouco menor que o label */
+    color: #777; /* Cor mais suave */
+    line-height: 1.4;
+    margin-top: 5px; /* Separa da label */
+}
+/* E ajuste a regra .dashboard-nav-button para ser flex column se ainda não for */
+.dashboard-nav-button {
+    /* ... estilos existentes ... */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* ... */
+}
